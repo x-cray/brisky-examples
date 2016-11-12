@@ -4,29 +4,38 @@ require('./style.css')
 const render = require('brisky/render')
 const s = require('vigour-state/s')
 
+const WORKSPACE_MODE_DATA_SOURCES = 'data-sources'
 const WORKSPACE_MODE_DESIGNER = 'designer'
 const WORKSPACE_MODE_STYLER = 'styler'
 
-const contentTypes = ['sports', 'movies', 'kids', 'music']
-const dataSources = {
-  sports: [''],
-  movies: ['movies feed'],
-  kids: ['cartoons feed'],
-  music: []
-}
-const layouts = {
-  sports: ['layout 1', 'layout 2'],
-  movies: ['layout 1', 'layout 2'],
-  kids: ['layout 1', 'layout 2']
-}
+const contentDomains = ['sports', 'movies', 'kids', 'music']
+const dataSources = ['movie', 'movies-feed', 'scoreboard', 'subscriptions']
+const layouts = ['layout 1', 'layout 2', 'layout 3']
 const components = {
-
+  player: {
+    name: 'Video Player',
+    contentDomains: ['sports', 'movies', 'kids', 'music']
+  },
+  scoreboard: {
+    name: 'Scoreboard',
+    contentDomains: ['sports']
+  },
+  list: {
+    name: 'List View',
+    contentDomains: ['sports', 'movies', 'kids', 'music']
+  },
+  artistInfo: {
+    name: 'Artist Information',
+    contentDomains: ['music']
+  }
 }
 
-function getNewProject (name) {
+function getNewProject (name, domain = 'sports') {
   return {
     name,
     created: new Date(),
+    contentDomains: contentDomains,
+    contentDomain: domain,
     workspace: {
       mode: WORKSPACE_MODE_DESIGNER
     }
@@ -54,10 +63,22 @@ function getModeSwitchButton (name, mode) {
   }
 }
 
+function getWorkspacePane (header, mode, contents) {
+  return {
+    $: '$test',
+    $test: state => state.mode && state.mode.compute() === mode,
+    header: {
+      tag: 'h3',
+      text: header
+    },
+    contents
+  }
+}
+
 const state = s({
   projects: {
-    mtv: getNewProject('MTV App'),
-    demo: getNewProject('Demo')
+    mtv: getNewProject('MTV App', 'music'),
+    demo: getNewProject('Demo', 'movies')
   },
   lastCreatedProject: 0
 })
@@ -105,34 +126,56 @@ const addNewProject = {
   }
 }
 
+const domainSwitch = {
+  tag: 'p',
+  class: 'control domain-switch',
+  text: 'Content Domain ',
+  select: {
+    $: 'contentDomains.$any',
+    tag: 'select',
+    child: {
+      tag: 'option',
+      text: { $: true },
+      props: {
+        value: { $: true },
+        selected: {
+          $: '$test',
+          $test: state => state && state.compute() === state.parent.parent.contentDomain.compute()
+        }
+      }
+    },
+    on: {
+      change: (e, stamp) => e.state.parent.set({ contentDomain: e.target.value }, stamp)
+    }
+  }
+}
+
 const modeSwitch = {
   $: 'workspace',
   tag: 'ul',
-  class: 'tabs',
+  class: 'control tabs',
+  dataSourcesMode: getModeSwitchButton('Data Sources', WORKSPACE_MODE_DATA_SOURCES),
   designerMode: getModeSwitchButton('Designer', WORKSPACE_MODE_DESIGNER),
   stylerMode: getModeSwitchButton('Styler', WORKSPACE_MODE_STYLER)
 }
 
 const workspace = {
   $: 'workspace',
-  designer: {
-    $: '$test',
-    $test: state => state.mode && state.mode.compute() === WORKSPACE_MODE_DESIGNER,
-    class: 'workspace',
-    header: {
-      tag: 'h3',
-      text: 'Designer'
+  class: 'workspace',
+  dataSources: getWorkspacePane(
+    'Data Sources Configuration',
+    WORKSPACE_MODE_DATA_SOURCES, {
+
     }
-  },
-  styler: {
-    $: '$test',
-    $test: state => state.mode && state.mode.compute() === WORKSPACE_MODE_STYLER,
-    class: 'workspace',
-    header: {
-      tag: 'h3',
-      text: 'This page allows you to change your app style'
-    },
-    palette: {
+  ),
+  designer: getWorkspacePane(
+    'Designer',
+    WORKSPACE_MODE_DESIGNER, {
+    }
+  ),
+  styler: getWorkspacePane(
+    'This page allows you to change your app style',
+    WORKSPACE_MODE_STYLER, {
       header: {
         tag: 'p',
         text: 'Pick your color palette below'
@@ -146,7 +189,7 @@ const workspace = {
         swatch5: { style: { backgroundColor: '#dcddcd' } }
       }
     }
-  }
+  )
 }
 
 const dashboardApp = {
@@ -177,7 +220,11 @@ const dashboardApp = {
           $: 'name'
         }
       },
-      modeSwitch
+      controls: {
+        class: 'pane-header-controls',
+        modeSwitch,
+        domainSwitch
+      }
     },
     workspace
   }

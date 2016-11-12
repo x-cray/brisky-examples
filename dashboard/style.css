@@ -1,0 +1,61 @@
+@import "https://fonts.googleapis.com/css?family=Droid+Sans+Mono";
+
+:root {
+  --bg: rgb(38, 50, 56);
+  --bg-selected: rgb(58, 70, 76);
+  --border: rgb(68, 80, 86);
+  --white: white;
+  --fg: rgb(84, 206, 177);
+  --whitea: rgba(255, 255, 255, 0.5);
+  --fg2: rgb(128, 203, 196);
+  --pane-width: 200px;
+}
+
+body {
+  background-color: var(--bg);
+  font-family: 'Droid Sans Mono';
+  color: var(--fg);
+}
+
+a, a:link {
+  color: var(--white);
+}
+
+a:hover {
+  color: var(--fg2);
+}
+
+.projects-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--pane-width);
+  border-right: 1px solid var(--border);
+  overflow: auto;
+}
+
+.pane-header {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+ul.picker {
+  margin: 0;
+  padding: 10px;
+}
+
+ul.picker li {
+  list-style-type: none;
+  margin: 0;
+}
+
+ul.picker li a {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+}
+
+ul.picker li a.selected, ul.picker li a:hover {
+  background-color: var(--bg-selected);
+}

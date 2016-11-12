@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css?family=Droid+Sans+Mono";
+@import "https://fonts.googleapis.com/css?family=Droid+Sans";
 
 :root {
   --bg: rgb(38, 50, 56);
@@ -13,19 +13,20 @@
 
 body {
   background-color: var(--bg);
-  font-family: 'Droid Sans Mono';
+  font-family: 'Droid Sans';
   color: var(--fg);
 }
 
 a, a:link {
   color: var(--white);
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 a:hover {
   color: var(--fg2);
 }
 
-h2 {
+h2, h3 {
   color: var(--white);
   margin: 0;
 }
@@ -48,27 +49,59 @@ h2 {
   left: var(--pane-width);
 }
 
+.workspace {
+  padding: 10px;
+}
+
+.palette div {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+}
+
 .pane-header {
   padding: 10px;
   border-bottom: 1px solid var(--border);
 }
 
-ul.picker {
-  margin: 0;
-  padding: 10px;
+.pane-header h2 {
+  display: inline;
 }
 
-ul.picker li {
+ul.tabs {
+  margin: 0;
+  padding: 0;
+  float: right;
+}
+
+ul.tabs li {
+  display: inline-block;
+}
+
+ul.tabs li a {
+  display: inline-block;
+}
+
+ul.picker li a {
+  display: block;
+}
+
+ul.picker {
+  margin: 0;
+  padding: 1px;
+}
+
+ul.picker li, ul.tabs li {
   list-style-type: none;
   margin: 0;
 }
 
-ul.picker li a {
+ul.picker li a, ul.tabs li a {
   display: block;
   text-decoration: none;
   padding: 10px;
 }
 
-ul.picker li a.selected, ul.picker li a:hover {
+ul.picker li a.selected, ul.picker li a:hover, ul.tabs li a.selected, ul.tabs li a:hover {
   background-color: var(--bg-selected);
 }

@@ -4,12 +4,12 @@ require('./style.css')
 const render = require('brisky/render')
 const s = require('vigour-state/s')
 
-const contentTypes = ['sports', 'movies', 'kids'];
+const contentTypes = ['sports', 'movies', 'kids']
 const dataSources = {
   sports: [''],
   movies: ['movies feed'],
   kids: ['cartoons feed']
-};
+}
 const layouts = {
   sports: ['layout 1', 'layout 2'],
   movies: ['layout 1', 'layout 2'],

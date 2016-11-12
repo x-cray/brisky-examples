@@ -32,7 +32,6 @@ const state = s({
   },
   lastCreatedProject: 0
 })
-state.set({ selectedProject: state.projects.mtv })
 
 const projectItem = {
   tag: 'li',
@@ -46,7 +45,7 @@ const projectItem = {
       selected: {
         $: '$test',
         $test: {
-          val: state => state.root.selectedProject.origin() === state,
+          val: state => state.root.selectedProject && state.root.selectedProject.origin() === state,
           $: {
             $root: { selectedProject: true }
           }
@@ -79,6 +78,10 @@ const addNewProject = {
   }
 }
 
+const workspace = {
+
+}
+
 const dashboardApp = {
   projectsListSection: {
     tag: 'section',
@@ -94,6 +97,22 @@ const dashboardApp = {
       class: 'picker',
       child: projectItem
     }
+  },
+  workspaceSection: {
+    $: '$test',
+    $test: {
+      val: state => !!state.root.selectedProject
+    },
+    tag: 'section',
+    class: 'workspace-pane',
+    header: {
+      tag: 'h2',
+      class: 'pane-header',
+      text: {
+        $: '$root.selectedProject.name'
+      }
+    },
+    workspace
   }
 }
 

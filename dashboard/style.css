@@ -25,6 +25,11 @@ a:hover {
   color: var(--fg2);
 }
 
+h2 {
+  color: var(--white);
+  margin: 0;
+}
+
 .projects-pane {
   position: absolute;
   top: 0;
@@ -33,6 +38,14 @@ a:hover {
   width: var(--pane-width);
   border-right: 1px solid var(--border);
   overflow: auto;
+}
+
+.workspace-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: var(--pane-width);
 }
 
 .pane-header {

@@ -197,10 +197,10 @@ const modeSwitch = {
   stylerMode: getModeSwitchButton(WORKSPACE_MODE_STYLER, 'Styler')
 }
 
-const workspace = {
-  dataSources: getWorkspacePane(WORKSPACE_MODE_DATA_SOURCES, dataSourcesPane),
-  designer: getWorkspacePane(WORKSPACE_MODE_DESIGNER, designerPane),
-  styler: getWorkspacePane(WORKSPACE_MODE_STYLER, stylerPane)
+const workspacePanes = {
+  dataSourcesPane: getWorkspacePane(WORKSPACE_MODE_DATA_SOURCES, dataSourcesPane),
+  designerPane: getWorkspacePane(WORKSPACE_MODE_DESIGNER, designerPane),
+  stylerPane: getWorkspacePane(WORKSPACE_MODE_STYLER, stylerPane)
 }
 
 const dashboardApp = {
@@ -209,6 +209,7 @@ const dashboardApp = {
     tag: 'section',
     class: 'projects-pane',
     header: {
+      tag: 'h2',
       class: 'pane-header',
       text: 'Your Projects ',
       addNewProject
@@ -229,6 +230,7 @@ const dashboardApp = {
       title: {
         tag: 'h2',
         text: {
+          $prepend: '=> ',
           $: 'name'
         }
       },
@@ -238,7 +240,7 @@ const dashboardApp = {
         domainSwitch
       }
     },
-    workspace
+    workspacePanes
   }
 }
 

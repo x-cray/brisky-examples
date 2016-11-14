@@ -4,12 +4,16 @@ require('./style.css')
 const render = require('brisky/render')
 const s = require('vigour-state/s')
 
+const dataSourcesPane = require('./data-sources')
+const designerPane = require('./designer')
+const stylerPane = require('./styler')
+
 const WORKSPACE_MODE_DATA_SOURCES = 'data-sources'
 const WORKSPACE_MODE_DESIGNER = 'designer'
 const WORKSPACE_MODE_STYLER = 'styler'
 
 const contentDomains = ['sports', 'movies', 'kids', 'music']
-const dataSources = ['movie', 'movies-feed', 'scoreboard', 'subscriptions']
+const dataSourceTypes = ['movie', 'movies-feed', 'scoreboard', 'subscriptions']
 const layouts = ['layout 1', 'layout 2', 'layout 3']
 const components = {
   player: {
@@ -33,29 +37,36 @@ const components = {
 function getNewProject (name, domain = 'sports') {
   return {
     name,
+    contentDomains,
+    layouts,
+    components,
     created: new Date(),
-    contentDomains: contentDomains,
+    dataSources: {},
     contentDomain: domain,
     workspace: {
-      mode: WORKSPACE_MODE_DESIGNER
+      dataSourceTypes,
+      mode: WORKSPACE_MODE_DATA_SOURCES,
+      currentDataSourceType: dataSourceTypes[0],
+      lastCreatedDataSource: 0
     }
   }
 }
 
 function getModeSwitchButton (name, mode) {
   return {
+    $: 'workspace',
     tag: 'li',
+    class: {
+      selected: {
+        $: '$test',
+        $test: state => state.mode && state.mode.compute() === mode,
+        $transform: true
+      }
+    },
     link: {
       tag: 'a',
       text: name,
       props: { href: 'javascript:void(0)' },
-      class: {
-        selected: {
-          $: '$test',
-          $test: state => state.mode && state.mode.compute() === mode,
-          $transform: true
-        }
-      },
       on: {
         click: (e, stamp) => e.state.set({ mode: mode }, stamp)
       }
@@ -66,7 +77,7 @@ function getModeSwitchButton (name, mode) {
 function getWorkspacePane (header, mode, contents) {
   return {
     $: '$test',
-    $test: state => state.mode && state.mode.compute() === mode,
+    $test: state => state.workspace.mode && state.workspace.mode.compute() === mode,
     header: {
       tag: 'h3',
       text: header
@@ -86,24 +97,24 @@ state.set({ selectedProject: state.projects.mtv })
 
 const projectItem = {
   tag: 'li',
+  class: {
+    selected: {
+      $: '$test',
+      $test: {
+        val: state => state.root.selectedProject && state.root.selectedProject.compute() === state,
+        $: {
+          $root: { selectedProject: true }
+        }
+      },
+      $transform: true
+    }
+  },
   link: {
     tag: 'a',
     text: {
       $: 'name'
     },
     props: { href: 'javascript:void(0)' },
-    class: {
-      selected: {
-        $: '$test',
-        $test: {
-          val: state => state.root.selectedProject && state.root.selectedProject.compute() === state,
-          $: {
-            $root: { selectedProject: true }
-          }
-        },
-        $transform: true
-      }
-    },
     on: {
       click: (e, stamp) => e.state.root.set({ selectedProject: e.state }, stamp)
     }
@@ -151,7 +162,6 @@ const domainSwitch = {
 }
 
 const modeSwitch = {
-  $: 'workspace',
   tag: 'ul',
   class: 'control tabs',
   dataSourcesMode: getModeSwitchButton('Data Sources', WORKSPACE_MODE_DATA_SOURCES),
@@ -160,36 +170,10 @@ const modeSwitch = {
 }
 
 const workspace = {
-  $: 'workspace',
   class: 'workspace',
-  dataSources: getWorkspacePane(
-    'Data Sources Configuration',
-    WORKSPACE_MODE_DATA_SOURCES, {
-
-    }
-  ),
-  designer: getWorkspacePane(
-    'Designer',
-    WORKSPACE_MODE_DESIGNER, {
-    }
-  ),
-  styler: getWorkspacePane(
-    'This page allows you to change your app style',
-    WORKSPACE_MODE_STYLER, {
-      header: {
-        tag: 'p',
-        text: 'Pick your color palette below'
-      },
-      colors: {
-        class: 'palette',
-        swatch1: { style: { backgroundColor: '#f15d58' } },
-        swatch2: { style: { backgroundColor: '#363635' } },
-        swatch3: { style: { backgroundColor: '#83bf17' } },
-        swatch4: { style: { backgroundColor: '#a68f58' } },
-        swatch5: { style: { backgroundColor: '#dcddcd' } }
-      }
-    }
-  )
+  dataSources: getWorkspacePane('Data Sources Configuration', WORKSPACE_MODE_DATA_SOURCES, dataSourcesPane),
+  designer: getWorkspacePane('Designer', WORKSPACE_MODE_DESIGNER, designerPane),
+  styler: getWorkspacePane('This page allows you to change your app style', WORKSPACE_MODE_STYLER, stylerPane)
 }
 
 const dashboardApp = {

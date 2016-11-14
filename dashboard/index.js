@@ -15,7 +15,6 @@ const WORKSPACE_MODE_STYLER = 'styler'
 
 const contentDomains = ['sports', 'movies', 'kids', 'music']
 const dataSourceTypes = ['movie', 'movies-feed', 'scoreboard', 'subscriptions']
-const layouts = ['layout 1', 'layout 2', 'layout 3']
 const components = {
   player: {
     name: 'Video Player',
@@ -29,31 +28,43 @@ const components = {
     name: 'List View',
     contentDomains: ['sports', 'movies', 'kids', 'music']
   },
+  playersInfo: {
+    name: 'Players Info',
+    contentDomains: ['sports']
+  },
+  gameStats: {
+    name: 'Game Stats',
+    contentDomains: ['sports']
+  },
+  imdbInfo: {
+    name: 'IMDB Movie Info',
+    contentDomains: ['movies', 'kids']
+  },
   artistInfo: {
     name: 'Artist Information',
     contentDomains: ['music']
   }
 }
 
-function getNewProject (name, domain = 'sports') {
+function getNewProject (name, domain = 'movies', layout = 'layout1') {
   return {
     name,
     contentDomains,
-    layouts,
     components,
     created: new Date(),
     dataSources: {},
     contentDomain: domain,
+    layout: layout,
     workspace: {
       dataSourceTypes,
-      mode: WORKSPACE_MODE_DATA_SOURCES,
+      mode: WORKSPACE_MODE_DESIGNER,
       currentDataSourceType: dataSourceTypes[0],
       lastCreatedDataSource: 0
     }
   }
 }
 
-function getModeSwitchButton (name, mode) {
+function getModeSwitchButton (mode, name) {
   return {
     $: 'workspace',
     tag: 'li',
@@ -69,20 +80,16 @@ function getModeSwitchButton (name, mode) {
       text: name,
       props: { href: 'javascript:void(0)' },
       on: {
-        click: (e, stamp) => e.state.set({ mode: mode }, stamp)
+        click: (e, stamp) => e.state.set({ mode }, stamp)
       }
     }
   }
 }
 
-function getWorkspacePane (header, mode, contents) {
+function getWorkspacePane (mode, contents) {
   return {
     $: '$test',
     $test: state => state.workspace.mode && state.workspace.mode.compute() === mode,
-    header: {
-      tag: 'h3',
-      text: header
-    },
     contents
   }
 }
@@ -90,7 +97,7 @@ function getWorkspacePane (header, mode, contents) {
 const state = s({
   projects: {
     mtv: getNewProject('MTV App', 'music'),
-    demo: getNewProject('Demo', 'movies')
+    demo: getNewProject('Demo', 'sports', 'layout3')
   },
   lastCreatedProject: 0
 })
@@ -129,7 +136,7 @@ const projectItem = {
       },
       on: {
         click: (e, stamp) => {
-          alert(e.state.name.compute() + ' is published')
+          alert(e.state.name.compute() + ' was published')
           e.event.stopPropagation()
         }
       }
@@ -180,36 +187,36 @@ const domainSwitch = {
 const modeSwitch = {
   tag: 'ul',
   class: 'control tabs',
-  dataSourcesMode: getModeSwitchButton('Data Sources', WORKSPACE_MODE_DATA_SOURCES),
-  designerMode: getModeSwitchButton('Designer', WORKSPACE_MODE_DESIGNER),
-  stylerMode: getModeSwitchButton('Styler', WORKSPACE_MODE_STYLER)
+  dataSourcesMode: getModeSwitchButton(WORKSPACE_MODE_DATA_SOURCES, 'Data Sources'),
+  designerMode: getModeSwitchButton(WORKSPACE_MODE_DESIGNER, 'Designer'),
+  stylerMode: getModeSwitchButton(WORKSPACE_MODE_STYLER, 'Styler')
 }
 
 const workspace = {
-  class: 'workspace',
-  dataSources: getWorkspacePane('Data Sources Configuration', WORKSPACE_MODE_DATA_SOURCES, dataSourcesPane),
-  designer: getWorkspacePane('Designer', WORKSPACE_MODE_DESIGNER, designerPane),
-  styler: getWorkspacePane('This page allows you to change your app style', WORKSPACE_MODE_STYLER, stylerPane)
+  dataSources: getWorkspacePane(WORKSPACE_MODE_DATA_SOURCES, dataSourcesPane),
+  designer: getWorkspacePane(WORKSPACE_MODE_DESIGNER, designerPane),
+  styler: getWorkspacePane(WORKSPACE_MODE_STYLER, stylerPane)
 }
 
 const dashboardApp = {
+  $: '$root',
   projectsListSection: {
     tag: 'section',
     class: 'projects-pane',
     header: {
       class: 'pane-header',
-      text: 'Your projects ',
+      text: 'Your Projects ',
       addNewProject
     },
     projectsList: {
-      $: '$root.projects.$any',
+      $: 'projects.$any',
       tag: 'ul',
       class: 'picker',
       child: projectItem
     }
   },
   workspaceSection: {
-    $: '$root.selectedProject',
+    $: 'selectedProject',
     tag: 'section',
     class: 'workspace-pane',
     header: {

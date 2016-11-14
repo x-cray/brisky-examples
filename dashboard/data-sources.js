@@ -1,7 +1,12 @@
 'use strict'
 
 module.exports = {
+  class: 'workspace',
   header: {
+    tag: 'h3',
+    text: 'Data Sources Configuration'
+  },
+  description: {
     tag: 'p',
     text: 'Below you may configure your data sources'
   },
@@ -51,10 +56,18 @@ module.exports = {
     class: 'picker',
     child: {
       tag: 'li',
+      class: 'vertical-list-item',
       link: {
         tag: 'a',
-        text: { $: true },
         props: { href: 'javascript:void(0)' },
+        icon: {
+          tag: 'i',
+          class: 'icon-database'
+        },
+        name: {
+          tag: 'span',
+          text: { $: true }
+        },
         delete: {
           tag: 'a',
           class: 'action',

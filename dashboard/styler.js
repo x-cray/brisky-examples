@@ -1,7 +1,12 @@
 'use strict'
 
 module.exports = {
+  class: 'workspace',
   header: {
+    tag: 'h3',
+    text: 'This page allows you to change your app style'
+  },
+  description: {
     tag: 'p',
     text: 'Pick your color palette below'
   },

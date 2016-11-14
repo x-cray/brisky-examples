@@ -6,7 +6,7 @@
   --border: rgb(68, 80, 86);
   --white: white;
   --fg: rgb(84, 206, 177);
-  --whitea: rgba(255, 255, 255, 0.5);
+  --whitea: rgba(255, 255, 255, .2);
   --fg2: rgb(128, 203, 196);
   --pane-width: 200px;
 }
@@ -50,6 +50,26 @@ h2, h3 {
   left: var(--pane-width);
 }
 
+.designer-workspace-pane {
+  position: relative;
+  padding-right: var(--pane-width);
+}
+
+.designer-components-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: var(--pane-width);
+  border-left: 1px solid var(--border);
+  background-color: var(--bg);
+  overflow: auto;
+}
+
+.vertical-list-item [class^="icon-"]:before, .vertical-list-item [class*=" icon-"]:before {
+  margin: 0 .5em 0 0;
+}
+
 .workspace {
   padding: 10px;
 }
@@ -82,6 +102,20 @@ h2, h3 {
   margin: 0;
 }
 
+.app-layout-designer i {
+  color: var(--whitea);
+  font-size: 4000%;
+}
+
+.app-layout-designer i:before {
+  padding: 30px;
+  margin: 0;
+}
+
+ul.layouts {
+  font-size: 200%;
+}
+
 ul.tabs {
   margin: 0;
   padding: 0;
@@ -107,7 +141,7 @@ ul.picker li:hover a.action {
 
 ul.picker {
   margin: 0;
-  padding: 1px;
+  padding: 5px;
 }
 
 ul.picker li, ul.tabs li {

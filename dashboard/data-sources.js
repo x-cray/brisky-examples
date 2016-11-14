@@ -57,8 +57,15 @@ module.exports = {
         props: { href: 'javascript:void(0)' },
         delete: {
           tag: 'a',
-          class: 'action icon remove',
-          props: { href: 'javascript:void(0)' }
+          class: 'action',
+          props: { href: 'javascript:void(0)' },
+          icon: {
+            tag: 'i',
+            class: 'icon-cancel-circled'
+          },
+          on: {
+            click: (e, stamp) => e.state.remove(stamp)
+          }
         }
       }
     }

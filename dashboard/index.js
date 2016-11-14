@@ -1,5 +1,6 @@
 'use strict'
-require('./style.css')
+require('./css/style.css')
+require('./css/fontello.css')
 
 const render = require('brisky/render')
 const s = require('vigour-state/s')
@@ -117,6 +118,21 @@ const projectItem = {
     props: { href: 'javascript:void(0)' },
     on: {
       click: (e, stamp) => e.state.root.set({ selectedProject: e.state }, stamp)
+    },
+    publish: {
+      tag: 'a',
+      class: 'action',
+      props: { href: 'javascript:void(0)' },
+      icon: {
+        tag: 'i',
+        class: 'icon-publish'
+      },
+      on: {
+        click: (e, stamp) => {
+          alert(e.state.name.compute() + ' is published')
+          e.event.stopPropagation()
+        }
+      }
     }
   }
 }

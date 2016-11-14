@@ -1,0 +1,126 @@
+@import "https://fonts.googleapis.com/css?family=Droid+Sans";
+
+:root {
+  --bg: rgb(38, 50, 56);
+  --bg-selected: rgb(58, 70, 76);
+  --border: rgb(68, 80, 86);
+  --white: white;
+  --fg: rgb(84, 206, 177);
+  --whitea: rgba(255, 255, 255, 0.5);
+  --fg2: rgb(128, 203, 196);
+  --pane-width: 200px;
+}
+
+body {
+  background-color: var(--bg);
+  font-family: 'Droid Sans';
+  font-size: 14px;
+  color: var(--fg);
+}
+
+a, a:link {
+  color: var(--white);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--fg2);
+}
+
+h2, h3 {
+  color: var(--white);
+  margin: 0;
+}
+
+.projects-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--pane-width);
+  border-right: 1px solid var(--border);
+  overflow: auto;
+}
+
+.workspace-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: var(--pane-width);
+}
+
+.workspace {
+  padding: 10px;
+}
+
+.palette div {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+}
+
+.pane-header {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pane-header h2 {
+  display: inline;
+}
+
+.pane-header-controls {
+  float: right;
+}
+
+.pane-header-controls .control {
+  float: right;
+}
+
+.domain-switch {
+  padding: 7px;
+  margin: 0;
+}
+
+ul.tabs {
+  margin: 0;
+  padding: 0;
+}
+
+ul.tabs li, ul.tabs li a {
+  display: inline-block;
+}
+
+ul.picker li a {
+  display: block;
+}
+
+ul.picker li a.action {
+  display: none;
+  float: right;
+  padding: 0;
+}
+
+ul.picker li:hover a.action {
+  display: inline;
+}
+
+ul.picker {
+  margin: 0;
+  padding: 1px;
+}
+
+ul.picker li, ul.tabs li {
+  transition: background-color 0.1s ease;
+  list-style-type: none;
+  margin: 0;
+}
+
+ul.picker li a, ul.tabs li a {
+  text-decoration: none;
+  padding: 10px;
+}
+
+ul.picker li.selected, ul.picker li:hover, ul.tabs li.selected, ul.tabs li:hover {
+  background-color: var(--bg-selected);
+}

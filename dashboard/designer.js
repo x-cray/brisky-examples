@@ -1,5 +1,7 @@
 'use strict'
 
+/* globals alert */
+
 const layoutClasses = {
   layout1: 'icon-1479141909_interface-20',
   layout2: 'icon-1479141884_interface-11',
@@ -34,7 +36,7 @@ function getLayoutSwitchButton (name) {
 module.exports = {
   class: 'designer-workspace-pane',
   workspace: {
-    class: 'workspace',
+    class: 'contents',
     header: {
       tag: 'h3',
       text: 'Designer'

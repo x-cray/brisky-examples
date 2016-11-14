@@ -2,6 +2,8 @@
 require('./css/style.css')
 require('./css/fontello.css')
 
+/* globals alert */
+
 const render = require('brisky/render')
 const s = require('vigour-state/s')
 
@@ -147,7 +149,10 @@ const projectItem = {
 const addNewProject = {
   tag: 'a',
   props: { href: 'javascript:void(0)' },
-  text: 'add',
+  icon: {
+    tag: 'i',
+    class: 'icon-plus-circled'
+  },
   on: {
     click: (e, stamp) => {
       const newProjectIndex = e.state.root.lastCreatedProject.compute() + 1

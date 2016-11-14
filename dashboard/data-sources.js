@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  class: 'workspace',
+  class: 'contents',
   header: {
     tag: 'h3',
     text: 'Data Sources Configuration'
@@ -36,7 +36,10 @@ module.exports = {
     $: 'workspace',
     tag: 'a',
     props: { href: 'javascript:void(0)' },
-    text: 'add',
+    icon: {
+      tag: 'i',
+      class: 'icon-plus-circled'
+    },
     on: {
       click: (e, stamp) => {
         const selectedDataSourceType = e.state.currentDataSourceType.compute()

@@ -84,7 +84,7 @@ module.exports = {
             if (state && state.parent && state.parent.parent) {
               const contentDomain = state.parent.parent.contentDomain.compute()
               const componentContentDomains = state.contentDomains.compute()
-              return componentContentDomains.keys().filter(key => componentContentDomains[key].compute() === contentDomain).length
+              return componentContentDomains.keys().some(key => componentContentDomains[key].compute() === contentDomain)
             }
           },
           $: {
